@@ -66,6 +66,7 @@
   <section id="mas_nc_help_panel_interop" class="mas-nc-help-panel" style="display:none;" role="tabpanel">
     <div class="pageoverflow">
       <p class="pagetext">{$mod->Lang('help_interop_body')}</p>
+      <p class="pagetext">{$mod->Lang('help_interop_cg_body')}</p>
     </div>
   </section>
 

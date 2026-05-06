@@ -57,6 +57,7 @@ $this->SetPreference('mas_nc_fatal_shutdown', '0');
 $this->SetPreference('mas_nc_vapid_contact', 'mailto:info@newstargeted.com');
 $this->SetPreference('mas_nc_health_on_cron', '1');
 $this->SetPreference('hidedonationstab', '');
+$this->SetPreference('mas_nc_admin_section', 'extensions');
 
 if (function_exists('random_bytes')) {
     $this->SetPreference('mas_nc_cron_token', bin2hex(random_bytes(24)));

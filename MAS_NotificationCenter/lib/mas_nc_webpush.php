@@ -41,19 +41,28 @@ final class MAS_NC_WebPush
 
     public static function sendToAdmins(CMSModule $mod, string $title, string $body): bool
     {
-        if (!self::vendorAutoload()) {
-            return false;
+        $internalOk = false;
+        if ($mod->GetPreference('mas_nc_enable_push', '1') === '1' && self::vendorAutoload()) {
+            $keys = self::getVapidKeys($mod);
+            $rows = $keys ? MAS_NC_PushRepo::loadAll($mod) : array();
+            if ($keys && count($rows) > 0) {
+                $internalOk = self::sendToAdminsInternal($mod, $title, $body, $keys, $rows);
+            }
         }
-        $keys = self::getVapidKeys($mod);
-        if (!$keys) {
-            return false;
+        $bridgeOk = false;
+        if (class_exists('MAS_NC_CGInterop')) {
+            $bridgeOk = MAS_NC_CGInterop::tryCGWebPushBroadcast($mod, $title, $body);
         }
 
-        $rows = MAS_NC_PushRepo::loadAll($mod);
-        if (count($rows) < 1) {
-            return false;
-        }
+        return $internalOk || $bridgeOk;
+    }
 
+    /**
+     * @param array{publicKey:string,privateKey:string} $keys
+     * @param array<int,array<string,mixed>> $rows
+     */
+    private static function sendToAdminsInternal(CMSModule $mod, string $title, string $body, array $keys, array $rows): bool
+    {
         try {
             $auth = array(
                 'VAPID' => array(
@@ -114,6 +123,7 @@ final class MAS_NC_WebPush
             return false;
         }
     }
+
 
     private static function mailtoSubject(CMSModule $mod): string
     {

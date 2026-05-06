@@ -26,7 +26,9 @@ final class MAS_NC_Dispatcher
                 $mask |= MAS_NC_Router::DELIVER_DISCORD;
             }
         }
-        if ($mod->GetPreference('mas_nc_enable_push', '1') === '1') {
+        $wantWebPush = $mod->GetPreference('mas_nc_enable_push', '1') === '1'
+            || $mod->GetPreference('mas_nc_cgwebpush_broadcast', '0') === '1';
+        if ($wantWebPush) {
             if (MAS_NC_WebPush::sendToAdmins($mod, $title, $body)) {
                 $mask |= MAS_NC_Router::DELIVER_PUSH;
             }

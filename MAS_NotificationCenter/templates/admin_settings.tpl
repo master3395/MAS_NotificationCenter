@@ -7,6 +7,17 @@
 {$settings_form_start}
 <input type="hidden" name="{$actionid}active_tab" value="settings">
 
+<h3 class="pagetext">{$mod->Lang('section_module_ui')}</h3>
+<div class="pageoverflow">
+  <p class="pagetext">{$mod->Lang('admin_section_label')}</p>
+  <p class="pageinput">{$mas_nc_admin_section_dropdown}</p>
+  <p class="pageinput"><span class="information">{$mod->Lang('admin_section_help')}</span></p>
+</div>
+<div class="pageoverflow">
+  <p class="pagetext">{$mod->Lang('show_donations_tab')}</p>
+  <p class="pageinput"><label><input type="checkbox" name="{$actionid}show_donations_tab_settings" value="1" {if $show_donations_tab_checked == '1'}checked{/if}> {$mod->Lang('show_donations_tab_help')}</label></p>
+</div>
+
 <h3 class="pagetext">{$mod->Lang('section_channels')}</h3>
 <div class="pageoverflow">
   <p class="pagetext">{$mod->Lang('enable_email')}</p>
@@ -28,6 +39,15 @@
 <div class="pageoverflow">
   <p class="pagetext">{$mod->Lang('enable_push')}</p>
   <p class="pageinput"><label><input type="checkbox" name="{$actionid}mas_nc_enable_push" value="1" {if $enable_push_checked == '1'}checked{/if}> {$mod->Lang('enable_push_help')}</label></p>
+</div>
+
+<h3 class="pagetext">{$mod->Lang('section_cg_stack')}</h3>
+<div class="pageoverflow">
+  <p class="pagetext">{$mod->Lang('cg_stack_detected')}</p>
+  <p class="pageinput"><span class="information">{$mod->Lang('cg_simplepwa_label')}: {if $has_cg_simple_pwa == '1'}{$mod->Lang('cg_detected_yes')}{else}{$mod->Lang('cg_detected_no')}{/if} &nbsp;|&nbsp; {$mod->Lang('cg_webpush_label')}: {if $has_cg_webpush == '1'}{$mod->Lang('cg_detected_yes')}{else}{$mod->Lang('cg_detected_no')}{/if}</span></p>
+  <p class="pageinput"><label><input type="checkbox" name="{$actionid}mas_nc_cgwebpush_broadcast" value="1" {if $cgwebpush_broadcast_checked == '1'}checked{/if}> {$mod->Lang('cgwebpush_broadcast_help')}</label></p>
+  <p class="pageinput"><label><input type="checkbox" name="{$actionid}mas_nc_admin_own_manifest" value="1" {if $admin_own_manifest_checked == '1'}checked{/if}> {$mod->Lang('admin_own_manifest_help')}</label></p>
+  <p class="pageinput"><span class="information">{$mod->Lang('cg_stack_note')}</span></p>
 </div>
 
 <h3 class="pagetext">{$mod->Lang('section_webpush')}</h3>
@@ -97,11 +117,6 @@
   <p class="pagetext">{$mod->Lang('cron_url_label')}</p>
   <p class="pageinput"><code style="word-break:break-all;">{$mas_nc_cron_url|escape}</code></p>
   <p class="pageinput"><span class="information">{$mod->Lang('cron_help')}</span></p>
-</div>
-
-<h3 class="pagetext">{$mod->Lang('show_donations_tab')}</h3>
-<div class="pageoverflow">
-  <p class="pageinput"><label><input type="checkbox" name="{$actionid}show_donations_tab_settings" value="1" {if $show_donations_tab_checked == '1'}checked{/if}> {$mod->Lang('show_donations_tab_help')}</label></p>
 </div>
 
 <div class="pageoverflow">

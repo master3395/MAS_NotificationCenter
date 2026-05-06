@@ -17,6 +17,7 @@ require_once __DIR__ . '/lib/mas_nc_dispatcher.php';
 require_once __DIR__ . '/lib/mas_nc_router.php';
 require_once __DIR__ . '/lib/mas_nc_health.php';
 require_once __DIR__ . '/lib/mas_nc_core_events.php';
+require_once __DIR__ . '/lib/mas_nc_cg_interop.php';
 
 final class MAS_NotificationCenter extends CMSModule
 {
@@ -51,7 +52,7 @@ final class MAS_NotificationCenter extends CMSModule
 
     public function GetVersion()
     {
-        return '1.0.2';
+        return '1.0.4';
     }
 
     public function GetAuthor()
@@ -172,7 +173,27 @@ final class MAS_NotificationCenter extends CMSModule
 
     public function GetAdminSection()
     {
-        return 'extensions';
+        static $allowed = null;
+        if ($allowed === null) {
+            $allowed = array(
+                'main',
+                'content',
+                'layout',
+                'files',
+                'usersgroups',
+                'extensions',
+                'siteadmin',
+                'ecommerce',
+                'myprefs',
+            );
+        }
+        $default = 'extensions';
+        $v = trim((string) $this->GetPreference('mas_nc_admin_section', $default));
+        if (!in_array($v, $allowed, true)) {
+            return $default;
+        }
+
+        return $v;
     }
 
     public function VisibleToAdminUser()
@@ -238,18 +259,27 @@ final class MAS_NotificationCenter extends CMSModule
     public function GetHeaderHTML($action = '')
     {
         $out = '';
-        try {
-            $pageId = (int) CmsApp::get_instance()->GetContentOperations()->GetDefaultPageID();
-            $manifestUrl = $this->create_url('cntnt01', 'manifest', $pageId, array('showtemplate' => 'false'));
-        } catch (Throwable $e) {
-            $manifestUrl = '';
+        if (class_exists('MAS_NC_CGInterop')) {
+            $out .= MAS_NC_CGInterop::adminPwaHeaderPrefix();
         }
-        $icon192 = $this->GetModuleURLPath() . '/images/icon-192.png';
-        if ($manifestUrl !== '') {
-            $out .= '<link rel="manifest" href="' . cms_htmlentities($manifestUrl) . '" crossorigin="use-credentials">';
+        $useSitePwa = class_exists('MAS_NC_CGInterop') && MAS_NC_CGInterop::hasCGSimplePwa();
+        if (!$useSitePwa || $this->GetPreference('mas_nc_admin_own_manifest', '0') === '1') {
+            try {
+                $pageId = (int) CmsApp::get_instance()->GetContentOperations()->GetDefaultPageID();
+                $manifestUrl = $this->create_url('cntnt01', 'manifest', $pageId, array('showtemplate' => 'false'));
+            } catch (Throwable $e) {
+                $manifestUrl = '';
+            }
+            $icon192 = $this->GetModuleURLPath() . '/images/icon-192.png';
+            if ($manifestUrl !== '') {
+                $out .= '<link rel="manifest" href="' . cms_htmlentities($manifestUrl) . '" crossorigin="use-credentials">';
+            }
+            $out .= '<meta name="theme-color" content="#0078d4">';
+            $out .= '<link rel="apple-touch-icon" href="' . cms_htmlentities($icon192) . '">';
+        } elseif ($useSitePwa) {
+            $icon192 = $this->GetModuleURLPath() . '/images/icon-192.png';
+            $out .= '<link rel="apple-touch-icon" href="' . cms_htmlentities($icon192) . '">';
         }
-        $out .= '<meta name="theme-color" content="#0078d4">';
-        $out .= '<link rel="apple-touch-icon" href="' . cms_htmlentities($icon192) . '">';
         $js = $this->GetModuleURLPath() . '/js/mas-nc-push.js';
         $out .= '<script defer src="' . cms_htmlentities($js) . '"></script>';
 

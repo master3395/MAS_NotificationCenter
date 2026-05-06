@@ -45,7 +45,7 @@
     {if $mas_nc_has_prev && $mas_nc_prev_url != ''}
       <a href="{$mas_nc_prev_url|escape:'html'}">{$mod->Lang('pager_prev')}</a>
     {/if}
-    &nbsp; {$mod->Lang('pager_page')} {$mas_nc_page|escape} — {$mod->Lang('pager_total')} {$mas_nc_total|escape} &nbsp;
+    &nbsp; {$mod->Lang('pager_page')} {$mas_nc_page|escape} - {$mod->Lang('pager_total')} {$mas_nc_total|escape} &nbsp;
     {if $mas_nc_has_next && $mas_nc_next_url != ''}
       <a href="{$mas_nc_next_url|escape:'html'}">{$mod->Lang('pager_next')}</a>
     {/if}

@@ -29,6 +29,23 @@ $smarty->assign('form_start', $this->CreateFormStart($id, 'save_settings', $retu
 $smarty->assign('form_end', $this->CreateFormEnd());
 $smarty->assign('settings_form_start', $this->CreateFormStart($id, 'save_settings', $returnid));
 $smarty->assign('settings_form_end', $this->CreateFormEnd());
+
+$adminSectionItems = array(
+    lang('main') => 'main',
+    lang('content') => 'content',
+    lang('layout') => 'layout',
+    lang('files') => 'files',
+    lang('usersgroups') => 'usersgroups',
+    lang('extensions') => 'extensions',
+    lang('admin') => 'siteadmin',
+    lang('ecommerce') => 'ecommerce',
+    lang('myprefs') => 'myprefs',
+);
+$smarty->assign(
+    'mas_nc_admin_section_dropdown',
+    $this->CreateInputDropdown($id, 'mas_nc_admin_section', $adminSectionItems, -1, $this->GetAdminSection())
+);
+
 $smarty->assign('hidedonationssubmit', $this->CreateInputSubmit($id, 'hidedonationssubmit', $this->Lang('hidedonationssubmit')));
 $smarty->assign('donationstext', $this->Lang('donationstext'));
 $smarty->assign('sponsorstext', $this->Lang('sponsors'));
@@ -57,6 +74,10 @@ $smarty->assign('mas_nc_cron_token_display', $cronToken !== '' ? $cronToken : $t
 $smarty->assign('enable_email_checked', $this->GetPreference('mas_nc_enable_email', '1') === '1' ? '1' : '0');
 $smarty->assign('enable_discord_checked', $this->GetPreference('mas_nc_enable_discord', '0') === '1' ? '1' : '0');
 $smarty->assign('enable_push_checked', $this->GetPreference('mas_nc_enable_push', '1') === '1' ? '1' : '0');
+$smarty->assign('cgwebpush_broadcast_checked', $this->GetPreference('mas_nc_cgwebpush_broadcast', '0') === '1' ? '1' : '0');
+$smarty->assign('admin_own_manifest_checked', $this->GetPreference('mas_nc_admin_own_manifest', '0') === '1' ? '1' : '0');
+$smarty->assign('has_cg_simple_pwa', class_exists('MAS_NC_CGInterop') && MAS_NC_CGInterop::hasCGSimplePwa() ? '1' : '0');
+$smarty->assign('has_cg_webpush', class_exists('MAS_NC_CGInterop') && MAS_NC_CGInterop::hasCGWebPush() ? '1' : '0');
 $smarty->assign('email_recipients', (string) $this->GetPreference('mas_nc_email_recipients', ''));
 $smarty->assign('discord_webhook', (string) $this->GetPreference('mas_nc_discord_webhook', ''));
 $smarty->assign('evt_login_failed_checked', $this->GetPreference('mas_nc_evt_login_failed', '0') === '1' ? '1' : '0');

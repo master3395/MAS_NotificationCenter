@@ -1,4 +1,4 @@
-/* MAS Notification Center — minimal push handler for published mas_nc_sw.js */
+/* MAS Notification Center: minimal push handler for published mas_nc_sw.js */
 self.addEventListener('push', function (event) {
   var payload = { title: 'Notice', body: '' };
   if (event.data) {

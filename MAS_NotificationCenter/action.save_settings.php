@@ -30,7 +30,7 @@ if (!empty($params['mas_nc_publish_sw'])) {
         return;
     }
     $body = (string) @file_get_contents($src);
-    $banner = '/* MAS Notification Center service worker — generated ' . gmdate('c') . " */\n";
+    $banner = '/* MAS Notification Center service worker, generated ' . gmdate('c') . " */\n";
     @file_put_contents($dest, $banner . $body);
     if (function_exists('audit')) {
         audit(0, 'MAS_NotificationCenter', 'Published mas_nc_sw.js to site root');
@@ -88,6 +88,8 @@ if (!empty($params['mas_nc_delete_selected']) && isset($params['mas_nc_sel']) &&
 $this->SetPreference('mas_nc_enable_email', !empty($params['mas_nc_enable_email']) ? '1' : '0');
 $this->SetPreference('mas_nc_enable_discord', !empty($params['mas_nc_enable_discord']) ? '1' : '0');
 $this->SetPreference('mas_nc_enable_push', !empty($params['mas_nc_enable_push']) ? '1' : '0');
+$this->SetPreference('mas_nc_cgwebpush_broadcast', !empty($params['mas_nc_cgwebpush_broadcast']) ? '1' : '0');
+$this->SetPreference('mas_nc_admin_own_manifest', !empty($params['mas_nc_admin_own_manifest']) ? '1' : '0');
 $this->SetPreference('mas_nc_email_recipients', isset($params['mas_nc_email_recipients']) ? trim((string) $params['mas_nc_email_recipients']) : '');
 $this->SetPreference('mas_nc_discord_webhook', isset($params['mas_nc_discord_webhook']) ? trim((string) $params['mas_nc_discord_webhook']) : '');
 $this->SetPreference('mas_nc_evt_login_failed', !empty($params['mas_nc_evt_login_failed']) ? '1' : '0');
@@ -98,6 +100,23 @@ $this->SetPreference('mas_nc_health_disk_pct', isset($params['mas_nc_health_disk
 $this->SetPreference('mas_nc_health_db_ms', isset($params['mas_nc_health_db_ms']) ? (string) max(0, (int) $params['mas_nc_health_db_ms']) : '2000');
 $this->SetPreference('mas_nc_vapid_contact', isset($params['mas_nc_vapid_contact']) ? trim((string) $params['mas_nc_vapid_contact']) : 'mailto:info@newstargeted.com');
 $this->SetPreference('mas_nc_rate_per_hour', isset($params['mas_nc_rate_per_hour']) ? (string) max(1, (int) $params['mas_nc_rate_per_hour']) : '120');
+
+$allowedSections = array(
+    'main',
+    'content',
+    'layout',
+    'files',
+    'usersgroups',
+    'extensions',
+    'siteadmin',
+    'ecommerce',
+    'myprefs',
+);
+$sec = isset($params['mas_nc_admin_section']) ? trim((string) $params['mas_nc_admin_section']) : 'extensions';
+if (!in_array($sec, $allowedSections, true)) {
+    $sec = 'extensions';
+}
+$this->SetPreference('mas_nc_admin_section', $sec);
 
 $showDonations = !empty($params['show_donations_tab_settings']);
 $this->SetPreference('hidedonationstab', $showDonations ? '' : $this->GetVersion());

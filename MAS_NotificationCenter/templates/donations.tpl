@@ -22,10 +22,11 @@
     <p class="pageinput"><a class="pagebutton" style="display:inline-block;background:#ffc439;color:#000;padding:8px 14px;border-radius:4px;text-decoration:none;" href="https://newstargeted.com/" target="_blank" rel="noopener noreferrer">{$mod->Lang('donate_btn')}</a></p>
   </div>
 
-  {$form_start}
+  {$settings_form_start}
   <input type="hidden" name="{$actionid}active_tab" value="donations">
+  <input type="hidden" name="{$actionid}show_donations_tab" value="0">
   <div class="pageoverflow" style="margin-top:16px;">
     <p class="pageinput">{$hidedonationssubmit}</p>
   </div>
-  {$form_end}
+  {$settings_form_end}
 </div>
