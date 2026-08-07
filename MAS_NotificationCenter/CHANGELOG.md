@@ -1,5 +1,11 @@
 # MAS_NotificationCenter changelog
 
+## 1.0.5 - 07/08/2026
+
+### Security
+
+- Pinned and bumped `guzzlehttp/guzzle` to ^7.15.2 and `guzzlehttp/psr7` to ^2.12.3 (fixes [GHSA-v5mv-p594-2x33](https://github.com/advisories/GHSA-v5mv-p594-2x33) and related Dependabot alerts pulled in via `minishlink/web-push`).
+
 ## 1.0.4 - 06/05/2026
 
 ### Added

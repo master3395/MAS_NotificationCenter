@@ -52,7 +52,7 @@ final class MAS_NotificationCenter extends CMSModule
 
     public function GetVersion()
     {
-        return '1.0.4';
+        return '1.0.5';
     }
 
     public function GetAuthor()

@@ -1,5 +1,7 @@
 {
     "require": {
+        "guzzlehttp/guzzle": "^7.15.2",
+        "guzzlehttp/psr7": "^2.12.3",
         "minishlink/web-push": "^6.0"
     }
 }
